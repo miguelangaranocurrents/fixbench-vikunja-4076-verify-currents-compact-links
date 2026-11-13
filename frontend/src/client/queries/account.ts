@@ -157,7 +157,6 @@ export function reconcileAccount({id, type}: AccountIdentity, client: QueryClien
 	}).catch(() => client.invalidateQueries({queryKey: accountKeys.user(id, type)}))
 }
 
-// Overlapping full-replacement PUTs would let the slower one revert the faster.
 const ACCOUNT_SETTINGS_SCOPE = {id: 'account-settings'}
 
 function withFrontendSettings(
@@ -198,8 +197,6 @@ export function useUpdateSettingsMutation() {
 	return useMutation(updateSettingsMutationOptions())
 }
 
-// PUT /user/settings/general is a full replace, so one frontend flag can only be stored together
-// with every other setting the server currently holds.
 export function updateFrontendSettingsMutationOptions() {
 	return mutationOptions({
 		...contextMutationOptions({
